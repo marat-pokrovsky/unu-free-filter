@@ -1,4 +1,3 @@
-//https://habr.com/ru/articles/703330/
 let isCheckedRadioBtnAsc = document.getElementById("radio_asc");
 const sortBtn = document.getElementById("sortBtn");
 sortBtn.addEventListener("click", () => {
