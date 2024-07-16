@@ -1,5 +1,5 @@
 body {
-  width: 350px;
+  width: 380px;
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
   text-align: center;
@@ -7,7 +7,7 @@ body {
 }
 .flex {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 }
 button {
@@ -26,13 +26,18 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #4caf50;
 }
 
 input[type="radio"] {
   margin: 5px 5px;
 }
-
+label{
+  padding: 5px;
+}
+.label:hover{
+  background-color: #349e39;
+}
 ul {
   width: 100%;
   display: flex;
@@ -47,12 +52,23 @@ ul {
 }
 .dropdown-btn {
   cursor: pointer;
+  padding: 10px;
+}
+.dropdown-btn:hover {
+  background-color: #45a049;
 }
 li {
   cursor: pointer;
   padding: 10px;
   list-style-type: none;
 }
+label > li:hover {
+  font-weight: bold;
+  background-color: #cc8fb8;
+}
 label {
   display: flex;
+}
+.border {
+  border: #45a049 1px solid;
 }

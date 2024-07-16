@@ -1,6 +1,5 @@
 //https://habr.com/ru/articles/703330/
 let isCheckedRadioBtnAsc = document.getElementById("radio_asc");
-
 const sortBtn = document.getElementById("sortBtn");
 sortBtn.addEventListener("click", () => {
   chrome.tabs.query({ active: true }, function (tabs) {
@@ -42,6 +41,24 @@ for (var i = 0; i < dropdowns.length; i++) {
     }
   });
 }
+const sortTaskBtn = document.getElementById("sortTaskBtn");
+sortTaskBtn.addEventListener("click", () => {
+  chrome.tabs.query({ active: true }, function (tabs) {
+    var tab = tabs[0];
+    if (tab) {
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id, allFrames: true },
+        func: sortTask,
+        args: [
+          document.querySelector("input[name=task_type]:checked")
+            .nextElementSibling.textContent,
+        ],
+      });
+    } else {
+      alert("There are no active tabs");
+    }
+  });
+});
 
 function loadMore() {
   (function () {
@@ -95,4 +112,26 @@ function sort(isCheckedRadioBtnAsc) {
 
   // Добавляем отсортированные ряды обратно в таблицу
   rows.forEach((row) => wrapper.appendChild(row));
+}
+function sortTask(taskType) {
+  let rows = Array.from(
+    document.querySelectorAll("#wrapper .search-task__table-row")
+  );
+  rows = rows.filter((row) => row.querySelector(".task-price"));
+
+  filteredRows = rows.filter(
+    (row) => row.querySelector(".task-type").textContent == taskType
+  );
+
+  unfilteredRows = rows.filter(
+    (row) => row.querySelector(".task-type").textContent !== taskType
+  );
+
+  // Удаляем все ряды из таблицы
+  let wrapper = document.querySelector("#wrapper");
+  wrapper.innerHTML = "";
+
+  // Добавляем отсортированные ряды обратно в таблицу
+  filteredRows.forEach((row) => wrapper.appendChild(row));
+  unfilteredRows.forEach((row) => wrapper.appendChild(row));
 }
