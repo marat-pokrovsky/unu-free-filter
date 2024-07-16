@@ -31,6 +31,18 @@ loadMoreBtn.addEventListener("click", () => {
   });
 });
 
+var dropdowns = document.getElementsByClassName("dropdown-btn");
+for (var i = 0; i < dropdowns.length; i++) {
+  dropdowns[i].addEventListener("click", function () {
+    var container = this.nextElementSibling;
+    if (container.style.display === "block") {
+      container.style.display = "none";
+    } else {
+      container.style.display = "block";
+    }
+  });
+}
+
 function loadMore() {
   (function () {
     var steps = 20; // Установите количество шагов

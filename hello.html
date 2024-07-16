@@ -1,22 +1,266 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Extension</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <button id="loadMoreBtn">Load More</button>
-    <br />
-    <input type="radio" checked id="radio_asc" name="sort" value="asc" /><label
-      for="radio-asc"
-      >Asc</label
-    >
-    <br />
-    <input type="radio" id="radio_desc" name="sort" value="desc" /><label
-      for="radio-desc"
-      >Desc</label
-    >
-    <br />
-    <button id="sortBtn">Sort</button>
+     <div class="flex">
+      <label>
+        <input type="radio" checked id="radio_asc" name="sort" value="asc" />
+        Asc</label
+      >
+      <label>
+        <input type="radio" id="radio_desc" name="sort" value="desc" />Desc
+      </label>
+    </div>
+   <button id="loadMoreBtn">Load More</button>
+    <button id="sortBtn">Sort Price</button>
+    <button id="sortTaskBtn">Sort Task</button>
+    <!-- Dropdown menu -->
+    <ul>
+      <li>
+        <span class="dropdown-btn"> Cоциальные сети и сервисы</span>
+        <ul class="dropdown-container">
+          <label>
+            <input type="radio" id="radio_0" name="task_type" checked />
+            <li>Лайки</li></label
+          >
+          <label>
+            <input type="radio" id="radio_1" name="task_type" />
+            <li>Репосты</li></label
+          >
+          <label>
+            <input type="radio" id="radio_2" name="task_type" />
+            <li>Подписчики</li></label
+          >
+          <label>
+            <input type="radio" id="radio_3" name="task_type" />
+            <li>Участие в голосовании</li></label
+          >
+          <label>
+            <input type="radio" id="radio_4" name="task_type" />
+            <li>Действия в ботах/приложениях соц. сетей</li></label
+          >
+          <label>
+            <input type="radio" id="radio_5" name="task_type" />
+            <li>Активность в соцсетях (не более 5 действий)\t</li></label
+          >
+          <label>
+            <input type="radio" id="radio_6" name="task_type" />
+            <li>Активность в соцсетях (не более 15 действий)</li></label
+          >
+          <label>
+            <input type="radio" id="radio_7" name="task_type" />
+            <li>Марафоны/розыгрыши/гивы в соц. сетях</li></label
+          >
+        </ul>
+      </li>
+
+      <li>
+        <span class="dropdown-btn">Регистрация</span>
+        <ul class="dropdown-container">
+          <label>
+            <input type="radio" id="radio_8" name="task_type" />
+            <li>Регистрация на сайте</li></label
+          >
+          <label>
+            <input type="radio" id="radio_9" name="task_type" />
+            <li>Регистрация на сайте с активностью</li></label
+          >
+          <label>
+            <input type="radio" id="radio_10" name="task_type" />
+            <li>Регистрация/оформление заявки с идентификацией</li></label
+          >
+          <label>
+            <input type="radio" id="radio_11" name="task_type" />
+            <li>Регистрация в сервисе заработка</li></label
+          >
+        </ul>
+      </li>
+
+      <li>
+        <span class="dropdown-btn"> Покупка аккаунтов</span>
+        <ul class="dropdown-container">
+          <label>
+            <input type="radio" id="radio_12" name="task_type" />
+            <li>Покупка E-mail</li></label
+          >
+          <label>
+            <input type="radio" id="radio_13" name="task_type" />
+            <li>Покупка новых аккаунтов соцсетей</li></label
+          >
+          <label>
+            <input type="radio" id="radio_14" name="task_type" />
+            <li>Покупка заполненных профилей соцсетей</li></label
+          >
+          <label>
+            <input type="radio" id="radio_15" name="task_type" />
+            <li>Другое</li></label
+          >
+          <label>
+            <input type="radio" id="radio_16" name="task_type" />
+            <li>Покупка аккаунта, подтвержденного почтой\n</li></label
+          >
+          <label>
+            <input type="radio" id="radio_17" name="task_type" />
+            <li>Покупка аккаунта, подтвержденного телефоном</li></label
+          >
+        </ul>
+      </li>
+      <li>
+        <span class="dropdown-btn">Приложения</span>
+        <ul class="dropdown-container">
+          <label>
+            <input type="radio" id="radio_18" name="task_type" />
+            <li>Установка приложений</li></label
+          >
+          <label>
+            <input type="radio" id="radio_19" name="task_type" />
+            <li>Установка приложений + действия</li></label
+          >
+        </ul>
+      </li>
+
+      <li>
+        <span class="dropdown-btn"> Комментарии и отзывы</span>
+        <ul class="dropdown-container">
+          <label>
+            <input type="radio" id="radio_20" name="task_type" />
+            <li>Короткие комментарии</li></label
+          >
+          <label>
+            <input type="radio" id="radio_21" name="task_type" />
+            <li>Комментарии от 150 символов</li></label
+          >
+          <label>
+            <input type="radio" id="radio_22" name="task_type" />
+            <li>Комментарии от 300 символов</li></label
+          >
+          <label>
+            <input type="radio" id="radio_23" name="task_type" />
+            <li>Комментарии от 500 символов</li></label
+          >
+          <label>
+            <input type="radio" id="radio_24" name="task_type" />
+            <li>Публикация готовых комментариев</li></label
+          >
+          <label>
+            <input type="radio" id="radio_25" name="task_type" />
+            <li>Отзывы на Яндексе (Карты, Маркет, Услуги и т.д.)</li></label
+          >
+          <label>
+            <input type="radio" id="radio_26" name="task_type" />
+            <li>Отзывы на Google.Картах</li></label
+          >
+          <label>
+            <input type="radio" id="radio_27" name="task_type" />
+            <li>Отзывы на 2Gis / Flamp / Yell / Zoon</li></label
+          >
+          <label>
+            <input type="radio" id="radio_28" name="task_type" />
+            <li>Отзывы на iRecommend / Отзовик</li></label
+          >
+          <label>
+            <input type="radio" id="radio_29" name="task_type" />
+            <li>Отзывы в других сервисах/агрегаторах</li></label
+          >
+          <label>
+            <input type="radio" id="radio_30" name="task_type" />
+            <li>Отзывы на Avito / Юла</li></label
+          >
+          <label>
+            <input type="radio" id="radio_31" name="task_type" />
+            <li>Оценка в сервисах Яндекс/Google без отзыва</li></label
+          >
+          <label>
+            <input type="radio" id="radio_32" name="task_type" />
+            <li>Поиск/просмотр объявления</li></label
+          >
+          <label>
+            <input type="radio" id="radio_33" name="task_type" />
+            <li>Сообщение/переписка (без отзыва)</li></label
+          >
+          <label>
+            <input type="radio" id="radio_34" name="task_type" />
+            <li>Активность по карточке (лайк, избранное, клики)</li></label
+          >
+        </ul>
+      </li>
+
+      <li>
+        <span class="dropdown-btn"> Просмотр видео</span>
+        <ul class="dropdown-container">
+          <label>
+            <input type="radio" id="radio_35" name="task_type" />
+            <li>Просмотр видео до 1 минуты</li></label
+          >
+          <label>
+            <input type="radio" id="radio_36" name="task_type" />
+            <li>Просмотр видео до 3 минут</li></label
+          >
+          <label>
+            <input type="radio" id="radio_37" name="task_type" />
+            <li>Просмотр видео до 6 минут</li></label
+          >
+          <label>
+            <input type="radio" id="radio_38" name="task_type" />
+            <li>Просмотр видео до 10 минут</li></label
+          >
+          <label>
+            <input type="radio" id="radio_39" name="task_type" />
+            <li>Просмотр видео до 20 минут</li></label
+          >
+          <label>
+            <input type="radio" id="radio_40" name="task_type" />
+            <li>Просмотр видео, 30+ минут</li></label
+          >
+        </ul>
+      </li>
+      <li>
+        <span class="dropdown-btn"> Прочее</span>
+        <ul class="dropdown-container">
+          <label>
+            <input type="radio" id="radio_41" name="task_type" />
+            <li>Поиск информации</li></label
+          >
+          <label>
+            <input type="radio" id="radio_42" name="task_type" />
+            <li>Тестирование программ и сервисов</li></label
+          >
+          <label>
+            <input type="radio" id="radio_43" name="task_type" />
+            <li>Клики/переходы на сайты</li></label
+          >
+          <label>
+            <input type="radio" id="radio_44" name="task_type" />
+            <li>Другое</li></label
+          >
+          <label>
+            <input type="radio" id="radio_45" name="task_type" />
+            <li>Активность 30+ мин</li></label
+          >
+          <label>
+            <input type="radio" id="radio_46" name="task_type" />
+            <li>Активность 10+ мин</li></label
+          >
+          <label>
+            <input type="radio" id="radio_47" name="task_type" />
+            <li>Активность 5+ мин</li></label
+          >
+          <label>
+            <input type="radio" id="radio_48" name="task_type" />
+            <li>Стать рефералом в UNU</li></label
+          >
+          <label>
+            <input type="radio" id="radio_49" name="task_type" />
+            <li>Рерайтинг текста</li></label
+          >
+        </ul>
+      </li>
+    </ul>
     <script src="script.js"></script>
   </body>
 </html>
