@@ -5,6 +5,11 @@ body {
   text-align: center;
   font-size: 14px;
 }
+.stick {
+  color: #f9f9f9;
+  padding: 20px 0;
+  border-left:1px solid #349e39;
+}
 .flex {
   display: flex;
   justify-content: space-evenly;
@@ -26,16 +31,16 @@ button {
 }
 
 button:hover {
-  background-color: #4caf50;
+  background-color: #217e24;
 }
 
 input[type="radio"] {
   margin: 5px 5px;
 }
-label{
+label {
   padding: 5px;
 }
-.label:hover{
+.label:hover {
   background-color: #349e39;
 }
 ul {
@@ -70,5 +75,6 @@ label {
   display: flex;
 }
 .border {
-  border: #45a049 1px solid;
+  border-top: #45a049 2px solid;
+  padding: 5px;
 }

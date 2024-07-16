@@ -90,8 +90,19 @@ function sort(isCheckedRadioBtnAsc) {
   let rows = Array.from(
     document.querySelectorAll("#wrapper .search-task__table-row")
   );
+  //Фильтруем пустые ряды
   rows = rows.filter((row) => row.querySelector(".task-price"));
+  /////////////////////////////////////////////////////////////////////////////////////////
+  const uniqueElements = {};
 
+  // Проходимся по каждому элементу и добавляем его в объект, используя id в качестве ключа
+  rows.forEach((element) => {
+    uniqueElements[element.id] = element;
+  });
+
+  // Преобразуем объект обратно в массив
+  rows = Object.values(uniqueElements);
+  ///////////////////////////////////////////////////////////////////////
   // Сортируем ряды по содержимому task-price
   rows.sort((a, b) => {
     // Получаем цены из .task-price
@@ -118,7 +129,15 @@ function sortTask(taskType) {
     document.querySelectorAll("#wrapper .search-task__table-row")
   );
   rows = rows.filter((row) => row.querySelector(".task-price"));
+  const uniqueElements = {};
 
+  // Проходимся по каждому элементу и добавляем его в объект, используя id в качестве ключа
+  rows.forEach((element) => {
+    uniqueElements[element.id] = element;
+  });
+
+  // Преобразуем объект обратно в массив
+  rows = Object.values(uniqueElements);
   filteredRows = rows.filter(
     (row) => row.querySelector(".task-type").textContent == taskType
   );
