@@ -113,7 +113,7 @@ function sort(isCheckedRadioBtnAsc) {
     );
 
     // Сравниваем цены
-    return priceB <= priceA && isCheckedRadioBtnAsc ? 1 : -1;
+    return isCheckedRadioBtnAsc ? priceA - priceB : priceB - priceA;
   });
 
   // Удаляем все ряды из таблицы
