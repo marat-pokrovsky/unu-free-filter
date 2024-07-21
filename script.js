@@ -14,6 +14,7 @@ sortBtn.addEventListener("click", () => {
     }
   });
 });
+
 const loadMoreBtn = document.getElementById("loadMoreBtn");
 loadMoreBtn.addEventListener("click", () => {
   chrome.tabs.query({ active: true }, function (tabs) {
@@ -22,6 +23,21 @@ loadMoreBtn.addEventListener("click", () => {
       chrome.scripting.executeScript({
         target: { tabId: tab.id, allFrames: true },
         func: loadMore,
+      });
+    } else {
+      alert("There are no active tabs");
+    }
+  });
+});
+
+const addBtn = document.getElementById("addBtn");
+addBtn.addEventListener("click", () => {
+  chrome.tabs.query({ active: true }, function (tabs) {
+    var tab = tabs[0];
+    if (tab) {
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id, allFrames: true },
+        func: addBtns,
       });
     } else {
       alert("There are no active tabs");
@@ -60,29 +76,27 @@ sortTaskBtn.addEventListener("click", () => {
 });
 
 function loadMore() {
-  (function () {
-    var steps = 20; // Установите количество шагов
-    var currentStep = 0;
+  var steps = 20; // Установите количество шагов
+  var delay = 700;
+  var currentStep = 0;
 
-    function clickButton() {
-      if (currentStep < steps) {
-        var button = document.getElementById("show_more_button");
-        if (button) {
-          button.click();
-          currentStep++;
-          console.log("Button clicked. Step: " + currentStep);
-        } else {
-          console.log('Button with ID "show_more_button" not found.');
-          clearInterval(intervalId);
-        }
+  function clickButton() {
+    if (currentStep < steps) {
+      var button = document.getElementById("show_more_button");
+      if (button) {
+        button.click();
+        currentStep++;
+        console.log("Button clicked. Step: " + currentStep);
       } else {
-        console.log("Completed " + steps + " steps.");
+        console.log('Button with ID "show_more_button" not found.');
         clearInterval(intervalId);
       }
+    } else {
+      console.log("Completed " + steps + " steps.");
+      clearInterval(intervalId);
     }
-
-    var intervalId = setInterval(clickButton, 500);
-  })();
+  }
+  var intervalId = setInterval(clickButton, delay);
 }
 
 function sort(isCheckedRadioBtnAsc) {
@@ -152,4 +166,26 @@ function sortTask(taskType) {
   // Добавляем отсортированные ряды обратно в таблицу
   filteredRows.forEach((row) => wrapper.appendChild(row));
   unfilteredRows.forEach((row) => wrapper.appendChild(row));
+}
+function addBtns() {
+  let rows = Array.from(
+    document.querySelectorAll("#wrapper .search-task__table-row")
+  );
+  rows.forEach((row) => {
+    if (row.querySelector(".toggleBtn")) return;
+    let btn = document.createElement("button");
+    btn.className = "toggleBtn";
+    btn.style.cursor = "pointer";
+    btn.style.width = "auto";
+    btn.style.border = "1px solid red";
+    btn.style.backgroundColor = "white";
+    btn.style.padding = "5px";
+    btn.style.borderRadius = "5px";
+    btn.style.marginRight = "50px";
+    btn.innerHTML = "toggle";
+    btn.addEventListener("click", (btn) => {
+      btn.target.closest(".search-task__table-row").classList.toggle("active");
+    });
+    row.prepend(btn);
+  });
 }
