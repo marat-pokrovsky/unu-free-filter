@@ -186,6 +186,6 @@ function addBtns() {
     btn.addEventListener("click", (btn) => {
       btn.target.closest(".search-task__table-row").classList.toggle("active");
     });
-    row.prepend(btn);
+    row.append(btn);
   });
 }
