@@ -9,7 +9,7 @@
   <body>
     <div class="flex">
       <button id="loadMoreBtn">Load More</button>
-      <div class="stick">|</div>
+      <!-- <div class="stick">|</div> -->
       <label class="label">
         <input type="radio" checked id="radio_asc" name="sort" value="asc" />
         Asc</label
@@ -18,10 +18,12 @@
         <input type="radio" id="radio_desc" name="sort" value="desc" />Desc
       </label>
       <button id="sortBtn">Sort Price</button>
+      <button id="addBtn">Add buttons</button>
     </div>
 
     <div class="border">
       <button id="sortTaskBtn">Sort Task</button>
+      
       <!-- Dropdown menu -->
       <ul>
         <li>
@@ -194,9 +196,9 @@
           <ul class="dropdown-container">
             <label>
               <input type="radio" id="radio_35" name="task_type" />
-              <li>Просмотр видео до 1 минуты</li></label
+              <li>Просмотр видео</li></label
             >
-            <label>
+            <!-- <label>
               <input type="radio" id="radio_36" name="task_type" />
               <li>Просмотр видео до 3 минут</li></label
             >
@@ -215,7 +217,7 @@
             <label>
               <input type="radio" id="radio_40" name="task_type" />
               <li>Просмотр видео, 30+ минут</li></label
-            >
+            > -->
           </ul>
         </li>
         <li>
@@ -260,8 +262,9 @@
           </ul>
         </li>
       </ul>
+      <button id="removeTaskBtn">Remove Task</button>
     </div>
-    <button id="addBtn">Add buttons</button>
+
     <script src="script.js"></script>
   </body>
 </html>

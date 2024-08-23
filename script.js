@@ -56,6 +56,7 @@ for (var i = 0; i < dropdowns.length; i++) {
     }
   });
 }
+//Sort tasks
 const sortTaskBtn = document.getElementById("sortTaskBtn");
 sortTaskBtn.addEventListener("click", () => {
   chrome.tabs.query({ active: true }, function (tabs) {
@@ -64,6 +65,25 @@ sortTaskBtn.addEventListener("click", () => {
       chrome.scripting.executeScript({
         target: { tabId: tab.id, allFrames: true },
         func: sortTask,
+        args: [
+          document.querySelector("input[name=task_type]:checked")
+            .nextElementSibling.textContent,
+        ],
+      });
+    } else {
+      alert("There are no active tabs");
+    }
+  });
+});
+//Remove tasks
+const removeTaskBtn = document.getElementById("removeTaskBtn");
+removeTaskBtn.addEventListener("click", () => {
+  chrome.tabs.query({ active: true }, function (tabs) {
+    var tab = tabs[0];
+    if (tab) {
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id, allFrames: true },
+        func: removeTask,
         args: [
           document.querySelector("input[name=task_type]:checked")
             .nextElementSibling.textContent,
@@ -137,6 +157,7 @@ function sort(isCheckedRadioBtnAsc) {
   // Добавляем отсортированные ряды обратно в таблицу
   rows.forEach((row) => wrapper.appendChild(row));
 }
+
 function sortTask(taskType) {
   let rows = Array.from(
     document.querySelectorAll("#wrapper .search-task__table-row")
@@ -151,12 +172,12 @@ function sortTask(taskType) {
 
   // Преобразуем объект обратно в массив
   rows = Object.values(uniqueElements);
-  filteredRows = rows.filter(
-    (row) => row.querySelector(".task-type").textContent == taskType
+  filteredRows = rows.filter((row) =>
+    row.querySelector(".task-type").textContent.includes(taskType)
   );
 
   unfilteredRows = rows.filter(
-    (row) => row.querySelector(".task-type").textContent !== taskType
+    (row) => !row.querySelector(".task-type").textContent.includes(taskType)
   );
 
   // Удаляем все ряды из таблицы
@@ -167,6 +188,39 @@ function sortTask(taskType) {
   filteredRows.forEach((row) => wrapper.appendChild(row));
   unfilteredRows.forEach((row) => wrapper.appendChild(row));
 }
+
+function removeTask(taskType) {
+  let rows = Array.from(
+    document.querySelectorAll("#wrapper .search-task__table-row")
+  );
+  rows = rows.filter((row) => row.querySelector(".task-price"));
+  const uniqueElements = {};
+
+  // Проходимся по каждому элементу и добавляем его в объект, используя id в качестве ключа
+  rows.forEach((element) => {
+    uniqueElements[element.id] = element;
+  });
+
+  // Преобразуем объект обратно в массив
+  rows = Object.values(uniqueElements);
+
+  filteredRows = rows.filter((row) =>
+    row.querySelector(".task-type").textContent.includes(taskType)
+  );
+
+  unfilteredRows = rows.filter(
+    (row) => !row.querySelector(".task-type").textContent.includes(taskType)
+  );
+
+  // Удаляем все ряды из таблицы
+  let wrapper = document.querySelector("#wrapper");
+  wrapper.innerHTML = "";
+
+  // Закоментировал отфильтрованные значения(удалил)
+  //filteredRows.forEach((row) => wrapper.appendChild(row));
+  unfilteredRows.forEach((row) => wrapper.appendChild(row));
+}
+
 function addBtns() {
   let rows = Array.from(
     document.querySelectorAll("#wrapper .search-task__table-row")
