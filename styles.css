@@ -15,6 +15,9 @@ body {
   justify-content: space-evenly;
   align-items: center;
 }
+#removeTaskBtn{
+	background-color: red; 
+}
 button {
   background-color: #4caf50; /* Green */
   border: none;
