@@ -22,4 +22,13 @@ class SmartHomeSystem:
         self.load_config()
         self.running = False
         self.simulation_thread = None
+
+    def load_config(self):
+        """Загрузка конфигурации из файла"""
+        if os.path.exists(self.config_file):
+            with open(self.config_file) as f:
+                config = json.load(f)
+                self.devices = config.get("devices", [])
+                self.rooms = config.get("rooms", [])
+                self.automations = config.get("automations", [])
         
