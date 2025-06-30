@@ -32,3 +32,12 @@ class SmartHomeSystem:
                 self.rooms = config.get("rooms", [])
                 self.automations = config.get("automations", [])
         
+    def save_config(self):
+        """Сохранение конфигурации в файл"""
+        config = {
+            "devices": self.devices,
+            "rooms": self.rooms,
+            "automations": self.automations
+        }
+        with open(self.config_file, "w") as f:
+            json.dump(config, f, indent=2)
