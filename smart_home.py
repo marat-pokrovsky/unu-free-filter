@@ -41,3 +41,15 @@ class SmartHomeSystem:
         }
         with open(self.config_file, "w") as f:
             json.dump(config, f, indent=2)
+
+    def add_room(self, name, room_type):
+        """Добавление комнаты"""
+        room = {
+            "id": len(self.rooms) + 1,
+            "name": name,
+            "type": room_type,  # living, bedroom, kitchen, bathroom, outdoor
+            "devices": []
+        }
+        self.rooms.append(room)
+        self.save_config()
+        return room
