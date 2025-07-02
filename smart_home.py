@@ -53,3 +53,25 @@ class SmartHomeSystem:
         self.rooms.append(room)
         self.save_config()
         return room
+
+    def add_device(self, name, device_type, room_id, status="off", power=0):
+        """Добавление устройства"""
+        device = {
+            "id": len(self.devices) + 1,
+            "name": name,
+            "type": device_type,  # light, thermostat, camera, lock, sensor, appliance
+            "status": status,
+            "power": power,  # Вт
+            "room_id": room_id,
+            "last_update": datetime.now().isoformat()
+        }
+        self.devices.append(device)
+        
+        # Добавляем устройство в комнату
+        for room in self.rooms:
+            if room["id"] == room_id:
+                room["devices"].append(device["id"])
+                break
+        
+        self.save_config()
+        return device
