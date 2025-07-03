@@ -75,3 +75,19 @@ class SmartHomeSystem:
         
         self.save_config()
         return device
+
+    def update_device_status(self, device_id, status, value=None):
+        """Обновление статуса устройства"""
+        for device in self.devices:
+            if device["id"] == device_id:
+                device["status"] = status
+                device["last_update"] = datetime.now().isoformat()
+                
+                # Для термостатов обновляем значение температуры
+                if device["type"] == "thermostat" and value is not None:
+                    device["value"] = value
+                
+                # Логируем изменения
+                self.log_security_event(f"Устройство {device['name']} изменено: {status}")
+                return device
+        return None
