@@ -91,3 +91,7 @@ class SmartHomeSystem:
                 self.log_security_event(f"Устройство {device['name']} изменено: {status}")
                 return device
         return None
+
+    def get_room_devices(self, room_id):
+        """Получение устройств в комнате"""
+        return [device for device in self.devices if device["room_id"] == room_id]
