@@ -95,3 +95,16 @@ class SmartHomeSystem:
     def get_room_devices(self, room_id):
         """Получение устройств в комнате"""
         return [device for device in self.devices if device["room_id"] == room_id]
+
+    def add_automation(self, name, trigger, condition, actions):
+        """Добавление автоматизации"""
+        automation = {
+            "id": len(self.automations) + 1,
+            "name": name,
+            "trigger": trigger,  # {"type": "time", "value": "18:00"} или {"type": "sensor", "sensor_id": 123, "condition": ">", "value": 30}
+            "condition": condition,  # {"type": "presence", "room_id": 1} или None
+            "actions": actions  # [{"device_id": 1, "command": "on"}, ...]
+        }
+        self.automations.append(automation)
+        self.save_config()
+        return automation
