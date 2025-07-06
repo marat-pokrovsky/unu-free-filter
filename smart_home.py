@@ -108,3 +108,25 @@ class SmartHomeSystem:
         self.automations.append(automation)
         self.save_config()
         return automation
+
+    def check_automations(self):
+        """Проверка и выполнение автоматизаций"""
+        now = datetime.now()
+        for automation in self.automations:
+            trigger = automation["trigger"]
+            executed = False
+            
+            # Триггер по времени
+            if trigger["type"] == "time":
+                trigger_time = datetime.strptime(trigger["value"], "%H:%M").time()
+                if now.time() >= trigger_time and (now - datetime.strptime(automation.get("last_executed", "2000-01-01T00:00:00"), "%Y-%m-%dT%H:%M:%S")).days >= 1:
+                    executed = self.execute_automation(automation)
+            
+            # Триггер по датчику
+            elif trigger["type"] == "sensor":
+                sensor = next((d for d in self.devices if d["id"] == trigger["sensor_id"]), None)
+                if sensor and self.check_sensor_condition(sensor, trigger["condition"], trigger["value"]):
+                    executed = self.execute_automation(automation)
+            
+            if executed:
+                automation["last_executed"] = now.isoformat()
