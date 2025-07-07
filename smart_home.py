@@ -130,3 +130,17 @@ class SmartHomeSystem:
             
             if executed:
                 automation["last_executed"] = now.isoformat()
+
+    def check_sensor_condition(self, sensor, condition, value):
+        """Проверка условия сенсора"""
+        sensor_value = sensor.get("value", 0)
+        try:
+            value = float(value)
+            if condition == ">": return sensor_value > value
+            if condition == "<": return sensor_value < value
+            if condition == "==": return sensor_value == value
+            if condition == ">=": return sensor_value >= value
+            if condition == "<=": return sensor_value <= value
+        except:
+            return False
+        return False
