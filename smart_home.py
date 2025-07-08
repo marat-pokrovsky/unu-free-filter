@@ -144,3 +144,22 @@ class SmartHomeSystem:
         except:
             return False
         return False
+
+    def execute_automation(self, automation):
+        """Выполнение действий автоматизации"""
+        # Проверка условий
+        if automation["condition"]:
+            cond = automation["condition"]
+            if cond["type"] == "presence":
+                # Проверка присутствия в комнате (упрощенная)
+                room_devices = self.get_room_devices(cond["room_id"])
+                motion_sensors = [d for d in room_devices if d["type"] == "sensor" and d.get("subtype") == "motion"]
+                if not any(s["status"] == "active" for s in motion_sensors):
+                    return False
+        
+        # Выполнение действий
+        for action in automation["actions"]:
+            self.update_device_status(action["device_id"], action["command"])
+        
+        self.log_security_event(f"Автоматизация выполнена: {automation['name']}")
+        return True
