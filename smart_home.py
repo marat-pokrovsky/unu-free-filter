@@ -163,3 +163,20 @@ class SmartHomeSystem:
         
         self.log_security_event(f"Автоматизация выполнена: {automation['name']}")
         return True
+
+    def log_energy_consumption(self):
+        """Логирование энергопотребления"""
+        total_power = 0
+        for device in self.devices:
+            if device["status"] == "on":
+                # Для термостатов учитываем только когда они активно работают
+                if device["type"] == "thermostat" and device.get("heating_cooling") == "idle":
+                    continue
+                total_power += device["power"]
+        
+        timestamp = datetime.now().isoformat()
+        self.energy_data.append({
+            "timestamp": timestamp,
+            "power": total_power,
+            "cost": self.calculate_energy_cost(total_power)
+        })
