@@ -180,3 +180,9 @@ class SmartHomeSystem:
             "power": total_power,
             "cost": self.calculate_energy_cost(total_power)
         })
+
+    def calculate_energy_cost(self, power):
+        """Расчет стоимости энергии"""
+        # Простая модель: стоимость за кВт*ч
+        kwh = power / 1000 * (1 / 60)  # потребление за минуту
+        return kwh * 5.0  # 5 руб/кВт*ч
