@@ -186,3 +186,11 @@ class SmartHomeSystem:
         # Простая модель: стоимость за кВт*ч
         kwh = power / 1000 * (1 / 60)  # потребление за минуту
         return kwh * 5.0  # 5 руб/кВт*ч
+
+    def log_security_event(self, event):
+        """Логирование события безопасности"""
+        self.security_log.append({
+            "timestamp": datetime.now().isoformat(),
+            "event": event,
+            "severity": "info"
+        })
