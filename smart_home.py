@@ -194,3 +194,21 @@ class SmartHomeSystem:
             "event": event,
             "severity": "info"
         })
+
+    def detect_anomalies(self):
+        """Обнаружение аномалий в энергопотреблении"""
+        if len(self.energy_data) < 24 * 60:  # меньше 1 дня данных
+            return []
+        
+        # Подготовка данных
+        power_values = [entry["power"] for entry in self.energy_data[-24*60:]]
+        scaler = StandardScaler()
+        scaled_data = scaler.fit_transform(np.array(power_values).reshape(-1, 1))
+        
+        # Обучение модели
+        model = IsolationForest(contamination=0.01, random_state=42)
+        model.fit(scaled_data)
+        
+        # Обнаружение аномалий
+        anomalies = model.predict(scaled_data)
+        return [i for i, anomaly in enumerate(anomalies) if anomaly == -1]
