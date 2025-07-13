@@ -212,3 +212,27 @@ class SmartHomeSystem:
         # Обнаружение аномалий
         anomalies = model.predict(scaled_data)
         return [i for i, anomaly in enumerate(anomalies) if anomaly == -1]
+
+    def simulate_home(self):
+        """Симуляция работы умного дома"""
+        self.running = True
+        print("Симуляция умного дома запущена...")
+        
+        while self.running:
+            # Обновление значений датчиков
+            for device in self.devices:
+                if device["type"] == "sensor":
+                    # Случайное изменение значений датчиков
+                    if random.random() > 0.7:
+                        if device.get("subtype") == "temperature":
+                            device["value"] = round(random.uniform(18, 25), 1)
+                        elif device.get("subtype") == "motion":
+                            device["status"] = "active" if random.random() > 0.8 else "inactive"
+            
+            # Проверка автоматизаций
+            self.check_automations()
+            
+            # Логирование энергии
+            self.log_energy_consumption()
+            
+            time.sleep(1)  # 1 секунда симуляции = 1 минуте реального времени
