@@ -236,3 +236,10 @@ class SmartHomeSystem:
             self.log_energy_consumption()
             
             time.sleep(1)  # 1 секунда симуляции = 1 минуте реального времени
+
+    def start_simulation(self):
+        """Запуск симуляции в отдельном потоке"""
+        if not self.simulation_thread or not self.simulation_thread.is_alive():
+            self.simulation_thread = threading.Thread(target=self.simulate_home)
+            self.simulation_thread.daemon = True
+            self.simulation_thread.start()
