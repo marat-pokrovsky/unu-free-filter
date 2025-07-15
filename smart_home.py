@@ -243,3 +243,10 @@ class SmartHomeSystem:
             self.simulation_thread = threading.Thread(target=self.simulate_home)
             self.simulation_thread.daemon = True
             self.simulation_thread.start()
+
+    def stop_simulation(self):
+        """Остановка симуляции"""
+        self.running = False
+        if self.simulation_thread:
+            self.simulation_thread.join()
+    
