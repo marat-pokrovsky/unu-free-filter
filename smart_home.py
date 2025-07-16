@@ -249,4 +249,35 @@ class SmartHomeSystem:
         self.running = False
         if self.simulation_thread:
             self.simulation_thread.join()
+
+    def get_energy_report(self, hours=24):
+        """Отчет по энергопотреблению"""
+        now = datetime.now()
+        start_time = now - timedelta(hours=hours)
+        
+        period_data = [e for e in self.energy_data 
+                      if datetime.fromisoformat(e["timestamp"]) >= start_time]
+        
+        if not period_data:
+            return {}
+        
+        total_energy = sum(e["power"] for e in period_data) / 60 / 1000  # кВт*ч
+        total_cost = sum(e["cost"] for e in period_data)
+        
+        # Потребление по устройствам
+        device_consumption = {}
+        for device in self.devices:
+            if device["status"] == "on":
+                # Оценка времени работы
+                active_time = 0
+                for entry in period_data:
+                    active_time += 1 if device["status"] == "on" else 0
+                device_consumption[device["name"]] = device["power"] * active_time / 60 / 1000  # кВт*ч
+        
+        return {
+            "total_energy": total_energy,
+            "total_cost": total_cost,
+            "device_consumption": device_consumption
+        }
+    
     
