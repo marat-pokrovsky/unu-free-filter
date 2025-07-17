@@ -279,5 +279,30 @@ class SmartHomeSystem:
             "total_cost": total_cost,
             "device_consumption": device_consumption
         }
+
+    def plot_energy_usage(self, hours=24):
+        """Визуализация энергопотребления"""
+        now = datetime.now()
+        start_time = now - timedelta(hours=hours)
+        
+        period_data = [e for e in self.energy_data 
+                      if datetime.fromisoformat(e["timestamp"]) >= start_time]
+        
+        if not period_data:
+            print("Нет данных для визуализации")
+            return
+        
+        timestamps = [datetime.fromisoformat(e["timestamp"]).strftime("%H:%M") for e in period_data]
+        power_values = [e["power"] for e in period_data]
+        
+        plt.figure(figsize=(12, 6))
+        plt.plot(timestamps, power_values, 'b-')
+        plt.title("Энергопотребление умного дома")
+        plt.xlabel("Время")
+        plt.ylabel("Мощность (Вт)")
+        plt.xticks(rotation=45, ha='right')
+        plt.grid(True, linestyle='--', alpha=0.7)
+        plt.tight_layout()
+        plt.show()
     
     
