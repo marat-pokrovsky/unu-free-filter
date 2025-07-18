@@ -304,5 +304,30 @@ class SmartHomeSystem:
         plt.grid(True, linestyle='--', alpha=0.7)
         plt.tight_layout()
         plt.show()
+
+    def plot_device_consumption(self):
+        """Визуализация потребления по устройствам"""
+        report = self.get_energy_report(24)
+        if not report or not report.get("device_consumption"):
+            print("Нет данных для визуализации")
+            return
+        
+        devices = list(report["device_consumption"].keys())
+        consumption = list(report["device_consumption"].values())
+        
+        # Сортировка по убыванию
+        sorted_idx = np.argsort(consumption)[::-1]
+        devices = [devices[i] for i in sorted_idx]
+        consumption = [consumption[i] for i in sorted_idx]
+        
+        plt.figure(figsize=(12, 6))
+        plt.bar(devices, consumption, color='skyblue')
+        plt.title("Потребление энергии по устройствам")
+        plt.xlabel("Устройства")
+        plt.ylabel("Энергия (кВт*ч)")
+        plt.xticks(rotation=45, ha='right')
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        plt.tight_layout()
+        plt.show()
     
     
