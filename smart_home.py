@@ -330,4 +330,18 @@ class SmartHomeSystem:
         plt.tight_layout()
         plt.show()
     
-    
+    def get_security_report(self):
+        """Отчет по безопасности"""
+        now = datetime.now()
+        start_time = now - timedelta(hours=24)
+        
+        period_events = [e for e in self.security_log 
+                        if datetime.fromisoformat(e["timestamp"]) >= start_time]
+        
+        critical_events = [e for e in period_events if e.get("severity") == "critical"]
+        
+        return {
+            "total_events": len(period_events),
+            "critical_events": len(critical_events),
+            "last_events": period_events[-5:] if period_events else []
+        }
