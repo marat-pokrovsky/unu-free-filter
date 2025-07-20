@@ -345,3 +345,18 @@ class SmartHomeSystem:
             "critical_events": len(critical_events),
             "last_events": period_events[-5:] if period_events else []
         }
+
+    def simulate_security_breach(self):
+        """Симуляция нарушения безопасности"""
+        # Выбираем случайную дверь или окно
+        access_devices = [d for d in self.devices if d["type"] == "lock" and "door" in d["name"].lower()]
+        if not access_devices:
+            return
+        
+        device = random.choice(access_devices)
+        self.log_security_event(f"Попытка несанкционированного доступа: {device['name']}", severity="critical")
+        
+        # Активируем сигнализацию
+        alarm = next((d for d in self.devices if "alarm" in d["name"].lower()), None)
+        if alarm:
+            self.update_device_status(alarm["id"], "on")
