@@ -360,3 +360,14 @@ class SmartHomeSystem:
         alarm = next((d for d in self.devices if "alarm" in d["name"].lower()), None)
         if alarm:
             self.update_device_status(alarm["id"], "on")
+
+    def save_current_state(self):
+        """Сохранение текущего состояния системы"""
+        state = {
+            "devices": self.devices,
+            "energy_data": self.energy_data,
+            "security_log": self.security_log,
+            "timestamp": datetime.now().isoformat()
+        }
+        with open("smart_home_state.json", "w") as f:
+            json.dump(state, f, indent=2)
