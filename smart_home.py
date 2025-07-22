@@ -371,3 +371,53 @@ class SmartHomeSystem:
         }
         with open("smart_home_state.json", "w") as f:
             json.dump(state, f, indent=2)
+
+# Создание демо-конфигурации
+def create_demo_config():
+    """Создание демонстрационной конфигурации умного дома"""
+    system = SmartHomeSystem()
+    
+    # Добавляем комнаты
+    living_room = system.add_room("Гостиная", "living")
+    bedroom = system.add_room("Спальня", "bedroom")
+    kitchen = system.add_room("Кухня", "kitchen")
+    outside = system.add_room("Улица", "outdoor")
+    
+    # Добавляем устройства
+    system.add_device("Основной свет", "light", living_room["id"], power=60)
+    system.add_device("Термостат", "thermostat", living_room["id"], power=500, status="on")
+    system.add_device("Телевизор", "appliance", living_room["id"], power=120)
+    system.add_device("Камера безопасности", "camera", outside["id"], power=15, status="on")
+    system.add_device("Датчик движения", "sensor", living_room["id"], power=5, status="inactive", subtype="motion")
+    system.add_device("Датчик температуры", "sensor", living_room["id"], power=5, status="on", subtype="temperature", value=22.0)
+    system.add_device("Датчик движения", "sensor", kitchen["id"], power=5, status="inactive", subtype="motion")
+    system.add_device("Датчик температуры", "sensor", kitchen["id"], power=5, status="on", subtype="temperature", value=21.0)
+    system.add_device("Входная дверь", "lock", outside["id"], power=10, status="locked")
+    system.add_device("Сигнализация", "alarm", outside["id"], power=100, status="off")
+    
+    # Добавляем автоматизации
+    system.add_automation(
+        name="Вечерний свет",
+        trigger={"type": "time", "value": "18:00"},
+        condition={"type": "presence", "room_id": living_room["id"]},
+        actions=[{"device_id": 1, "command": "on"}]
+    )
+    
+    system.add_automation(
+        name="Экономия энергии ночью",
+        trigger={"type": "time", "value": "23:00"},
+        condition=None,
+        actions=[
+            {"device_id": 1, "command": "off"},
+            {"device_id": 3, "command": "off"}
+        ]
+    )
+    
+    system.add_automation(
+        name="Кондиционирование при жаре",
+        trigger={"type": "sensor", "sensor_id": 6, "condition": ">", "value": "25"},
+        condition={"type": "presence", "room_id": living_room["id"]},
+        actions=[{"device_id": 2, "command": "cool"}]
+    )
+    
+    return system
