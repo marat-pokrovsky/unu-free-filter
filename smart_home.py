@@ -421,3 +421,71 @@ def create_demo_config():
     )
     
     return system
+
+
+# Пример использования
+if __name__ == "__main__":
+    # Создаем систему умного дома
+    home_system = create_demo_config()
+    
+    # Запускаем симуляцию
+    home_system.start_simulation()
+    
+    # Имитация взаимодействия пользователя
+    print("\nУправление умным домом:")
+    print("1. Включить свет в гостиной")
+    print("2. Открыть входную дверь")
+    print("3. Симулировать нарушение безопасности")
+    print("4. Показать отчеты")
+    print("5. Остановить симуляцию")
+    
+    try:
+        while True:
+            choice = input("\nВыберите действие: ")
+            
+            if choice == "1":
+                # Включаем свет
+                light = next(d for d in home_system.devices if "свет" in d["name"])
+                home_system.update_device_status(light["id"], "on")
+                print("Свет в гостиной включен")
+                
+            elif choice == "2":
+                # Открываем дверь
+                door = next(d for d in home_system.devices if "дверь" in d["name"])
+                home_system.update_device_status(door["id"], "unlocked")
+                print("Входная дверь открыта")
+                
+            elif choice == "3":
+                # Симулируем нарушение безопасности
+                home_system.simulate_security_breach()
+                print("Нарушение безопасности симулировано")
+                
+            elif choice == "4":
+                # Отчеты
+                energy_report = home_system.get_energy_report()
+                print("\nЭнергетический отчет:")
+                print(f"Потреблено: {energy_report['total_energy']:.2f} кВт*ч")
+                print(f"Стоимость: {energy_report['total_cost']:.2f} руб")
+                
+                security_report = home_system.get_security_report()
+                print("\nОтчет безопасности:")
+                print(f"Событий за 24ч: {security_report['total_events']}")
+                print(f"Критических событий: {security_report['critical_events']}")
+                print("Последние события:")
+                for event in security_report.get("last_events", [])[:3]:
+                    print(f"- {event['event']} ({event['timestamp'][11:16]})")
+                
+                # Визуализация
+                home_system.plot_energy_usage()
+                home_system.plot_device_consumption()
+                
+            elif choice == "5":
+                home_system.stop_simulation()
+                home_system.save_current_state()
+                print("Симуляция остановлена")
+                break
+                
+    except KeyboardInterrupt:
+        home_system.stop_simulation()
+        home_system.save_current_state()
+        print("\nСимуляция остановлена")
