@@ -5,23 +5,6 @@ import time
 from datetime import datetime, timedelta
 import threading
 
-# Handle optional imports
-try:
-    import matplotlib.pyplot as plt
-    import numpy as np
-    HAS_MATPLOTLIB = True
-except ImportError:
-    HAS_MATPLOTLIB = False
-    print("Warning: matplotlib not available. Plotting will be disabled.")
-
-try:
-    from sklearn.ensemble import IsolationForest
-    from sklearn.preprocessing import StandardScaler
-    HAS_SKLEARN = True
-except ImportError:
-    HAS_SKLEARN = False
-    print("Warning: scikit-learn not available. Anomaly detection will be disabled.")
-
 
 class SmartHomeSystem:
     def __init__(self, config_file="smart_home_config.json"):
@@ -211,10 +194,19 @@ class SmartHomeSystem:
         })
 
     def calculate_energy_cost(self, power):
-        """Calculate energy cost"""
-        # Simple model: cost per kWh
+        """Calculate energy cost with a more realistic tariff structure"""
+        # Convert power (watts) to kWh for a 1-minute period
         kwh = power / 1000 * (1 / 60)  # consumption per minute
-        return kwh * 5.0  # $5/kWh
+        
+        # More realistic tariff structure with peak/off-peak rates
+        current_hour = datetime.now().hour
+        # Peak hours (7am-11pm) are more expensive
+        if 7 <= current_hour < 23:
+            rate = 0.15  # $0.15/kWh during peak hours
+        else:
+            rate = 0.10  # $0.10/kWh during off-peak hours
+            
+        return kwh * rate
 
     def log_security_event(self, event, severity="info"):
         """Log security event"""
@@ -226,9 +218,13 @@ class SmartHomeSystem:
 
     def detect_anomalies(self):
         """Detect anomalies in energy consumption"""
-        # Check if ML libraries are available
-        if not HAS_SKLEARN:
-            print("Anomaly detection disabled: scikit-learn not available")
+        # Try to import required libraries
+        try:
+            from sklearn.ensemble import IsolationForest
+            from sklearn.preprocessing import StandardScaler
+            import numpy as np
+        except ImportError:
+            print("Anomaly detection disabled: Required libraries not available")
             return []
             
         if len(self.energy_data) < 24 * 60:  # less than 1 day of data
@@ -298,15 +294,20 @@ class SmartHomeSystem:
         total_energy = sum(e["power"] for e in period_data) / 60 / 1000  # kWh
         total_cost = sum(e["cost"] for e in period_data)
         
-        # Consumption by devices
+        # Consumption by devices - improved calculation
         device_consumption = {}
+        # For each device, calculate how long it was on during the period
         for device in self.devices:
-            if device["status"] == "on":
-                # Estimate operating time
-                active_time = 0
+            if device["power"] > 0:  # Only devices that consume power
+                # Count how many minutes this device was on
+                minutes_on = 0
                 for entry in period_data:
-                    active_time += 1 if device["status"] == "on" else 0
-                device_consumption[device["name"]] = device["power"] * active_time / 60 / 1000  # kWh
+                    # This is a simplified approach - in a real system we would track
+                    # device state changes more precisely
+                    minutes_on += 1 if device["status"] == "on" else 0
+                
+                # Calculate energy consumption for this device
+                device_consumption[device["name"]] = device["power"] * minutes_on / 60 / 1000  # kWh
         
         return {
             "total_energy": total_energy,
@@ -316,8 +317,10 @@ class SmartHomeSystem:
 
     def plot_energy_usage(self, hours=24):
         """Visualize energy consumption"""
-        # Check if plotting libraries are available
-        if not HAS_MATPLOTLIB:
+        # Try to import required libraries
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
             print("Plotting disabled: matplotlib not available")
             return
             
@@ -346,9 +349,12 @@ class SmartHomeSystem:
 
     def plot_device_consumption(self):
         """Visualize consumption by devices"""
-        # Check if plotting libraries are available
-        if not HAS_MATPLOTLIB:
-            print("Plotting disabled: matplotlib not available")
+        # Try to import required libraries
+        try:
+            import matplotlib.pyplot as plt
+            import numpy as np
+        except ImportError:
+            print("Plotting disabled: Required libraries not available")
             return
             
         report = self.get_energy_report(24)
@@ -360,10 +366,9 @@ class SmartHomeSystem:
         consumption = list(report["device_consumption"].values())
         
         # Sort by descending order
-        if HAS_MATPLOTLIB:
-            sorted_idx = np.argsort(consumption)[::-1]
-            devices = [devices[i] for i in sorted_idx]
-            consumption = [consumption[i] for i in sorted_idx]
+        sorted_idx = np.argsort(consumption)[::-1]
+        devices = [devices[i] for i in sorted_idx]
+        consumption = [consumption[i] for i in sorted_idx]
         
         plt.figure(figsize=(12, 6))
         plt.bar(devices, consumption, color='skyblue')
