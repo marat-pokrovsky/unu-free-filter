@@ -1,57 +1,48 @@
-from datetime import datetime
-from config import save_config
+import random
 
-def add_room(rooms, name, room_type):
-    """Add a room to the system"""
-    room = {
-        "id": len(rooms) + 1,
-        "name": name,
-        "type": room_type,  # living, bedroom, kitchen, bathroom, outdoor
-        "devices": []
-    }
-    rooms.append(room)
-    return room
+class SmartDevice:
+    """Base class for smart devices"""
 
-def add_device(devices, rooms, name, device_type, room_id, status="off", power=0, **kwargs):
-    """Add a device to the system"""
-    device = {
-        "id": len(devices) + 1,
-        "name": name,
-        "type": device_type,  # light, thermostat, camera, lock, sensor, appliance
-        "status": status,
-        "power": power,  # Watts
-        "room_id": room_id,
-        "last_update": datetime.now().isoformat()
-    }
-    
-    # Add additional attributes if provided
-    for key, value in kwargs.items():
-        device[key] = value
-    
-    devices.append(device)
-    
-    # Add device to room
-    for room in rooms:
-        if room["id"] == room_id:
-            room["devices"].append(device["id"])
-            break
-    
-    return device
+    def __init__(self, device_id, device_type):
+        self.device_id = device_id
+        self.device_type = device_type
+        self.status = "off"
 
-def update_device_status(devices, device_id, status, value=None):
-    """Update device status"""
-    for device in devices:
-        if device["id"] == device_id:
-            device["status"] = status
-            device["last_update"] = datetime.now().isoformat()
-            
-            # For thermostats, update temperature value
-            if device["type"] == "thermostat" and value is not None:
-                device["value"] = value
-            
-            return device
-    return None
+    def turn_on(self):
+        self.status = "on"
 
-def get_room_devices(devices, room_id):
-    """Get devices in a room"""
-    return [device for device in devices if device["room_id"] == room_id]
+    def turn_off(self):
+        self.status = "off"
+
+class Light(SmartDevice):
+    """Represents a smart light"""
+
+    def __init__(self, device_id):
+        super().__init__(device_id, "light")
+        self.brightness = 100
+
+    def set_brightness(self, brightness):
+        self.brightness = brightness
+
+class Thermostat(SmartDevice):
+    """Represents a smart thermostat"""
+
+    def __init__(self, device_id):
+        super().__init__(device_id, "thermostat")
+        self.temperature = 20
+
+    def set_temperature(self, temperature):
+        self.temperature = temperature
+
+class SecurityCamera(SmartDevice):
+    """Represents a security camera"""
+
+    def __init__(self, device_id):
+        super().__init__(device_id, "security_camera")
+        self.is_recording = False
+
+    def start_recording(self):
+        self.is_recording = True
+
+    def stop_recording(self):
+        self.is_recording = False
