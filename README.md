@@ -33,3 +33,20 @@ This project is a Python-based simulation of a smart home environment. It demons
 - `config.py`: Functions for loading and saving the configuration.
 - `smart_home_config.json`: The configuration file for the smart home.
 - `requirements.txt`: A list of python dependencies for the project.
+
+---
+
+## Mini Game: Smart Home Adventure
+
+A simple adventure game created using Pygame.
+
+### How to Run
+
+1. **Install Pygame:**
+   ```bash
+   pip install pygame
+   ```
+2. **Run the game:**
+   ```bash
+   python mini_game/game.py
+   ```
