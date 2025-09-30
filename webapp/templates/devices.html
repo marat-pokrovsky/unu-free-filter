@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Home - Devices</title>
+</head>
+<body>
+    <h1>Devices</h1>
+    <ul>
+        {% for device in devices %}
+            <li>{{ device.name }} - {{ device.device_type }} - {{ device.status }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
