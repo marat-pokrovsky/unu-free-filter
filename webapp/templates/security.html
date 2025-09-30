@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Home - Security</title>
+</head>
+<body>
+    <h1>Security Log</h1>
+    <ul>
+        {% for entry in security_log %}
+            <li>{{ entry }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
