@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Home - Automations</title>
+</head>
+<body>
+    <h1>Automations</h1>
+    <ul>
+        {% for automation in automations %}
+            <li>{{ automation.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
